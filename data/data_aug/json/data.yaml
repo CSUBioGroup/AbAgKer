@@ -1,0 +1,13 @@
+data:
+  target: main.DataModuleFromConfig
+  params:
+    batch_size: 16
+    num_workers: 16
+    train:
+      target: taming.data.PM_Data.DataTrain
+      params:
+        training_list_file: /root/private_data/luog/AbAgKer/data/AbAgA_byPDB/fold_3_test.json
+    validation:
+      target: taming.data.PM_Data.DataVal
+      params:
+        val_list_file: /root/private_data/luog/AbAgKer/data/data_aug/json/no_kd.json

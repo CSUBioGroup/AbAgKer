@@ -1,0 +1,55 @@
+
+model:
+  base_learning_rate: 1.0
+  target: taming.models.AbAgKer_Koff.AbAgKerTrainer
+  params:
+    monitor: val/koff_rmse
+    train_type: koff
+    ckpt_path: /root/private_data/luog/AbAgKer/logs/2025-11-22T10-37-55_AbAgKer_fold2_1120_withAbAgIdata/AbAgker/2025-11-22T10-37-55_AbAgKer_fold2_1120_withAbAgIdata/checkpoints/epoch=49-step=29350.ckpt
+    ignore_keys: ['koff_regressor']
+    model_config:
+      target: taming.modules.autoencoder.Model_wKoff.AbAgKerModel
+      params:
+        H_llm: /root/private_data/luog/pretrained_LLM/palm/Heavy_roformer
+        L_llm: /root/private_data/luog/pretrained_LLM/palm/Light_roformer
+        ems2_llm: /root/private_data/luog/AbAgKer/pretrain_LLM/esm2  # /root/private_data/luog/pretrained_LLM/esm2_t30
+        ab_maxlen: 256 
+        ag_maxlen: 896 
+        dim: 512
+        cdrs_layers: 4
+        cdrs_heads: 16
+        co_heads: 8
+        ab_pool_nums: 64
+        ag_pool_nums: 64
+        ag_window: 9
+        dp_out: 0.1
+        num_experts: 4
+        top_k: 2
+    opt_config: 
+      beta1: 0.9
+      beta2: 0.999
+      warm_up_steps: 120
+      lr_min: 1.0e-6
+      lr_max: 5.0e-5
+      lr_start: 1.0e-7
+      max_decay_steps: 1200 # 194 *50 epoch = 9600/8 = 1200
+      verbosity_interval: 100
+    loss_config:
+      target: taming.modules.losses.loss_Abagk.CELoss 
+      params:
+        kd_weight: 1.0
+        koff_weight: 1.0
+
+data:
+  target: main.DataModuleFromConfig
+  params:
+    batch_size: 8
+    num_workers: 4
+    train:
+      target: taming.data.PM_Data.DataTrain
+      params:
+        training_list_file: /root/private_data/luog/AbAgKer/data/AbAgIoff_byPDB/fold_3_train.json
+    validation:
+      target: taming.data.PM_Data.DataVal
+      params:
+        val_list_file: /root/private_data/luog/AbAgKer/data/AbAgIoff_byPDB/fold_3_test.json
