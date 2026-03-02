@@ -3,6 +3,35 @@
 ## Abstract
 To the best of our knowledge, we are the first to achieve full K-value prediction for antigen-antibody interactions (covering Kd, koff and kon), providing a comprehensive tool for antibody screening and analysis.
 
+
+## Installation
+
+### 1. Environment
+We recommend Python **3.9-3.10**.
+
+### 2. Core Training Dependencies
+Install framework dependencies used by `main_wandb.py` and `taming/` modules:
+
+```bash
+pip install torch==1.12.0 torchvision torchaudio
+pip install pytorch-lightning==1.5.10 torchmetrics transformers omegaconf
+pip install numpy scipy scikit-learn pandas tqdm wandb pudb
+pip install antiberty
+pip install biopython jupyter ipykernel
+```
+
+### 3. Data Pipeline
+To run notebooks under `data_pipline/` and `notebook/`, install:
+```bash
+  pip install b2bTools
+  
+  # ANARCI
+  conda install -c conda-forge biopython -y
+  conda install -c bioconda hmmer=3.3.2 -y
+  cd ANARCI
+  python setup.py install
+```
+
 ## Architecture Description
 - **Training entrypoint**: `main_wandb.py` provides config-driven model/data instantiation, deterministic setup, logger/callback registration, and Trainer execution.
 - **Lightning wrapper**: `taming/models/AbAgKer_newLLM.py` defines `AbAgKerTrainer`, including `training_step`, `validation_step`, metric tracking, optimizer/scheduler setup, and feature assembly.
