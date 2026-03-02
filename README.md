@@ -76,6 +76,7 @@ The preprocessing workflow under `data_pipline/` converts raw public resources i
 - **CDR masks/features**: `data_pipline/AbAgKer_all/cdrs_ssf/cdrs_compute.ipynb`
   - Uses ANARCI-based numbering to derive CDR region indicators.
   - Exports tensors consumed by the antibody Cattention pipeline.
+- **The processed auxiliary feature file link**: https://huggingface.co/luog93/AbAgKer
 
 ### Runtime Linkage
 Generated JSON and feature tensors are mirrored into runtime directories (`data/`, `data/data_aug/`) and consumed by `taming/data/PM_Data.py` during training and evaluation.
@@ -91,7 +92,7 @@ python main_wandb.py -t True -b path/to/config.yaml --save-dir logs
 
 ## Inference Instructions
 For checkpoint-based inference/prediction:
-1. Load the trained checkpoint through the corresponding config.
+1. Load the trained checkpoint through the corresponding config, the trained model checkpoint can be found in https://huggingface.co/luog93/AbAgKer
 2. Reuse the same dataset schema for test JSON input.
 3. Execute Lightning test/predict flow (or notebook workflows in `notebook/mutation_prediction/`).
 
